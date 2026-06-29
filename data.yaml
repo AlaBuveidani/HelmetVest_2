@@ -1,0 +1,13 @@
+# Dataset config for the construction-safety-2 Roboflow export (matches best.pt classes).
+path: construction-safety-2
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 5
+names:
+  0: helmet
+  1: no-helmet
+  2: no-vest
+  3: person
+  4: vest

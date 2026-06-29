@@ -1,0 +1,17 @@
+.venv/
+.vscode/
+.idea/
+
+__pycache__/
+*.pyc
+
+runs/
+datasets/
+construction-safety-2/
+New folder/
+
+*.rar
+*.zip
+*.pt
+
+.DS_Store
