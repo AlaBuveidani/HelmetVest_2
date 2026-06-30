@@ -126,21 +126,5 @@ curl -X POST "http://127.0.0.1:8000/detect" \
 
 Her tespit sonucu; belirlenen sınıfı (`class`), güven skorunu (`conf`) ve sınırlayıcı kutuyu (`box`) piksel koordinatları `[x1, y1, x2, y2]` biçiminde içerir. Baret kullanılmayan durumlara (`no-helmet`) ilişkin sonuçlar, iş yeri güvenliği takibi için uyarı kaydı oluşturmak amacıyla değerlendirilebilir.
 
-## Ekran Görüntüleri
 
-Aşağıdaki tabloya örnek tespit sonuçlarını ve uygulama görünümlerini ekleyebilirsiniz.
 
-| Görünüm | Açıklama |
-| --- | --- |
-| _(ekran görüntüsü ekleyin)_ | Örnek tespit sonucu |
-| _(ekran görüntüsü ekleyin)_ | Etkileşimli API belgeleri |
-
-<!--
-Örnek kullanım:
-| ![Tespit örneği](docs/ekran-goruntusu-1.png) | Örnek tespit sonucu |
-| ![API belgeleri](docs/ekran-goruntusu-2.png) | Etkileşimli API belgeleri |
--->
-
-## Lisans
-
-Bu proje için henüz bir lisans belirlenmemiştir. Projenin hangi koşullar altında kullanılabileceğini tanımlamak için bir `LICENSE` dosyası ekleyin ve bu bölümü güncelleyin.
