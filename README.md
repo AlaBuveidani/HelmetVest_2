@@ -1,115 +1,118 @@
-# Construction Safety PPE Detection
+# Baret Kullanımı İzleme Sistemi
 
-A computer vision project that detects personal protective equipment (PPE) in construction site images. It uses a [YOLOv8](https://docs.ultralytics.com/) object detection model and exposes a lightweight [FastAPI](https://fastapi.tiangolo.com/) service for running inference over uploaded images.
+Kamera görüntüleri üzerinden iş yerinde baret (kask) kullanımını izlemeye yönelik bir bilgisayarlı görü projesidir. Sistem, çalışma alanlarından alınan görüntüleri analiz ederek kişisel koruyucu donanım (KKD) kullanımını otomatik olarak değerlendirir ve baret kullanımına ilişkin tespitleri kayıt altına alır.
 
-The model is trained to recognize five classes relevant to workplace safety: `helmet`, `no-helmet`, `no-vest`, `person`, and `vest`.
+Proje; iş yeri güvenliği uygulamalarında karar destek aracı olarak kullanılmak üzere tasarlanmış olup, Windows masaüstü ortamında çalıştırılabilen bir izleme çözümünün görü ve çıkarım bileşenlerini sağlar. Modelin çekirdeğinde [YOLOv8](https://docs.ultralytics.com/) nesne tespiti mimarisi yer alır; çıkarım hizmeti ise hafif bir [FastAPI](https://fastapi.tiangolo.com/) servisi aracılığıyla sunulur.
 
-## Features
+Model, iş yeri güvenliği açısından önem taşıyan beş sınıfı tanıyacak şekilde eğitilmiştir: `helmet` (baret var), `no-helmet` (baret yok), `no-vest` (yelek yok), `person` (kişi) ve `vest` (yelek var). Bu sınıflar sayesinde, baret veya yelek kullanmayan kişilere ilişkin uygunsuzluk durumları tespit edilerek uyarı kaydı oluşturulabilir.
 
-- **REST API for detection** — upload an image and receive detected objects with class labels, confidence scores, and bounding boxes.
-- **PPE-aware classes** — distinguishes between workers wearing or missing helmets and vests.
-- **Reproducible training** — a training script built on YOLOv8 with configurable hyperparameters.
-- **Dataset download helper** — a script to fetch the dataset export used for training.
-- **Simple, dependency-driven setup** — all requirements pinned in `requirements.txt`.
+## Özellikler
 
-## Tech Stack
+- **Görüntü tabanlı tespit hizmeti** — Yüklenen bir görüntü üzerinde çıkarım yapar; tespit edilen nesneleri sınıf etiketleri, güven skorları ve sınırlayıcı kutu koordinatları ile birlikte döndürür.
+- **KKD odaklı sınıflandırma** — Baret ve yelek kullanan ya da kullanmayan kişileri birbirinden ayırt eder.
+- **Uygunsuzluk tespiti** — Baret veya yelek bulunmayan durumları belirleyerek uyarı kaydı oluşturmaya elverişli çıktılar üretir.
+- **Yeniden üretilebilir eğitim** — Hiperparametreleri yapılandırılabilen, YOLOv8 tabanlı bir eğitim betiği içerir.
+- **Veri kümesi indirme yardımcısı** — Eğitimde kullanılan veri kümesi dışa aktarımını indiren bir betik sunar.
+- **Sade ve bağımlılık odaklı kurulum** — Tüm gereksinimler `requirements.txt` dosyasında belirtilmiştir.
 
-- **Language:** Python 3
-- **Model / CV:** Ultralytics YOLOv8, OpenCV, NumPy
-- **Deep learning runtime:** PyTorch, TorchVision
+## Teknoloji Yığını
+
+- **Programlama dili:** Python 3
+- **Model / Bilgisayarlı görü:** Ultralytics YOLOv8, OpenCV, NumPy
+- **Derin öğrenme altyapısı:** PyTorch, TorchVision
 - **API:** FastAPI, Uvicorn, python-multipart
-- **Dataset tooling:** Roboflow
+- **Veri kümesi araçları:** Roboflow
 
-## Project Structure
+## Klasör Yapısı
 
 ```
 .
-├── main.py               # FastAPI app exposing the /detect endpoint
-├── train.py              # Trains a YOLOv8 model on the dataset
-├── download_dataset.py   # Downloads the dataset export (YOLOv8 format)
-├── data.yaml             # Dataset config: paths and class names
-├── requirements.txt      # Python dependencies
+├── main.py               # /detect uç noktasını sunan FastAPI uygulaması
+├── train.py              # Veri kümesi üzerinde YOLOv8 modelini eğitir
+├── download_dataset.py   # Veri kümesi dışa aktarımını indirir (YOLOv8 biçimi)
+├── data.yaml             # Veri kümesi yapılandırması: yollar ve sınıf adları
+├── requirements.txt      # Python bağımlılıkları
 ├── .gitignore
 └── README.md
 ```
 
-Generated or downloaded artifacts (not tracked in version control):
+Üretilen veya indirilen dosyalar (sürüm denetimine dâhil edilmez):
 
-- `best.pt` — trained model weights loaded by the API.
-- `construction-safety-2/` — dataset export used for training.
-- `runs/` — training outputs and metrics.
+- `best.pt` — API tarafından yüklenen, eğitilmiş model ağırlıkları.
+- `construction-safety-2/` — Eğitimde kullanılan veri kümesi dışa aktarımı.
+- `runs/` — Eğitim çıktıları ve başarım metrikleri.
 
-## Installation
+## Kurulum
 
-1. Clone the repository:
+1. Depoyu klonlayın:
 
 ```bash
-git clone <repository-url>
-cd <repository-directory>
+git clone <depo-adresi>
+cd <depo-dizini>
 ```
 
-2. Create and activate a virtual environment:
+2. Bir sanal ortam oluşturup etkinleştirin:
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate      # On Windows: .venv\Scripts\activate
+.venv\Scripts\activate        # Linux/macOS için: source .venv/bin/activate
 ```
 
-3. Install the dependencies:
+3. Bağımlılıkları yükleyin:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Environment Variables
+## Ortam Değişkenleri
 
-This project reads configuration from environment variables. Create a `.env` file (or export the variables in your shell) using placeholder values such as the following:
+Proje, yapılandırma bilgilerini ortam değişkenlerinden okur. Bir `.env` dosyası oluşturarak (veya değişkenleri kabuk ortamında tanımlayarak) aşağıdaki gibi yalnızca placeholder (yer tutucu) değerler kullanın:
 
 ```env
-# API key for the dataset provider (used by download_dataset.py)
-ROBOFLOW_API_KEY=<your-roboflow-api-key>
+# Veri kümesi sağlayıcısına ait API anahtarı (download_dataset.py tarafından kullanılır)
+ROBOFLOW_API_KEY=<roboflow-api-anahtariniz>
 ```
 
-> Never commit real credentials. Use placeholders in documentation and keep your actual `.env` file out of version control.
+> Gerçek kimlik bilgilerini hiçbir zaman depoya eklemeyin. Dokümantasyonda yalnızca yer tutucu değerler kullanın ve gerçek `.env` dosyanızı sürüm denetiminin dışında tutun.
 
-## Usage
+## Çalıştırma
 
-### 1. Download the dataset (optional, for training)
+### 1. Veri kümesini indirme (eğitim için, isteğe bağlı)
 
 ```bash
 python download_dataset.py
 ```
 
-This downloads the dataset export in YOLOv8 format. Make sure the resulting folder matches the `path` setting in `data.yaml`.
+Bu betik, veri kümesini YOLOv8 biçiminde indirir. Oluşan klasörün `data.yaml` dosyasındaki `path` ayarıyla uyumlu olduğundan emin olun.
 
-### 2. Train the model (optional)
+### 2. Modeli eğitme (isteğe bağlı)
 
 ```bash
 python train.py
 ```
 
-Training produces model weights under `runs/`. Copy or rename the resulting best weights to `best.pt` in the project root so the API can load them.
+Eğitim sonucunda model ağırlıkları `runs/` dizini altında üretilir. API'nin ağırlıkları yükleyebilmesi için elde edilen en iyi ağırlık dosyasını proje kök dizinine `best.pt` adıyla kopyalayın veya yeniden adlandırın.
 
-### 3. Run the API server
+### 3. API sunucusunu çalıştırma
 
-Make sure `best.pt` exists in the project root, then start the server:
+Proje kök dizininde `best.pt` dosyasının bulunduğundan emin olduktan sonra sunucuyu başlatın:
 
 ```bash
 uvicorn main:app --reload
 ```
 
-The API will be available at `http://127.0.0.1:8000`. Interactive API docs are served at `http://127.0.0.1:8000/docs`.
+API, `http://127.0.0.1:8000` adresinde kullanılabilir hâle gelir. Etkileşimli API belgelerine `http://127.0.0.1:8000/docs` adresinden erişebilirsiniz.
 
-### 4. Send a detection request
+## Kullanım
 
-Upload an image to the `/detect` endpoint:
+Bir görüntü üzerinde tespit yapmak için görüntüyü `/detect` uç noktasına yükleyin:
 
 ```bash
 curl -X POST "http://127.0.0.1:8000/detect" \
-  -F "file=@path/to/image.jpg"
+  -F "file=@goruntu/yolu.jpg"
 ```
 
-Example response:
+Örnek yanıt:
 
 ```json
 [
@@ -121,17 +124,23 @@ Example response:
 ]
 ```
 
-Each result includes the detected `class`, the confidence score `conf`, and the bounding box `box` as `[x1, y1, x2, y2]` pixel coordinates.
+Her tespit sonucu; belirlenen sınıfı (`class`), güven skorunu (`conf`) ve sınırlayıcı kutuyu (`box`) piksel koordinatları `[x1, y1, x2, y2]` biçiminde içerir. Baret kullanılmayan durumlara (`no-helmet`) ilişkin sonuçlar, iş yeri güvenliği takibi için uyarı kaydı oluşturmak amacıyla değerlendirilebilir.
 
-## Screenshots
+## Ekran Görüntüleri
 
-_Add screenshots or sample detection results here._
+Aşağıdaki tabloya örnek tespit sonuçlarını ve uygulama görünümlerini ekleyebilirsiniz.
+
+| Görünüm | Açıklama |
+| --- | --- |
+| _(ekran görüntüsü ekleyin)_ | Örnek tespit sonucu |
+| _(ekran görüntüsü ekleyin)_ | Etkileşimli API belgeleri |
 
 <!--
-![Detection example](docs/screenshot-1.png)
-![API docs](docs/screenshot-2.png)
+Örnek kullanım:
+| ![Tespit örneği](docs/ekran-goruntusu-1.png) | Örnek tespit sonucu |
+| ![API belgeleri](docs/ekran-goruntusu-2.png) | Etkileşimli API belgeleri |
 -->
 
-## License
+## Lisans
 
-No license has been specified for this project yet. Add a `LICENSE` file and update this section to declare the terms under which the project may be used.
+Bu proje için henüz bir lisans belirlenmemiştir. Projenin hangi koşullar altında kullanılabileceğini tanımlamak için bir `LICENSE` dosyası ekleyin ve bu bölümü güncelleyin.
