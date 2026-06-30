@@ -73,7 +73,6 @@ Proje, yapılandırma bilgilerini ortam değişkenlerinden okur. Bir `.env` dosy
 ROBOFLOW_API_KEY=<roboflow-api-anahtariniz>
 ```
 
-> Gerçek kimlik bilgilerini hiçbir zaman depoya eklemeyin. Dokümantasyonda yalnızca yer tutucu değerler kullanın ve gerçek `.env` dosyanızı sürüm denetiminin dışında tutun.
 
 ## Çalıştırma
 
